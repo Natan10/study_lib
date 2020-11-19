@@ -3,17 +3,15 @@ package api.library.study_library.model.entity;
 import javax.persistence.*;
 
 @Entity
-@Table(name="author",schema = "lib")
-public class Author {
+@Table(name="genre",schema = "lib")
+public class Genre {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
     @Column(name = "nome",nullable = false)
     private String nome;
-
-    @Column(name = "email",nullable = false)
-    private String email;
 
     public Integer getId() {
         return id;
@@ -31,22 +29,14 @@ public class Author {
         this.nome = nome;
     }
 
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        Author author = (Author) o;
+        Genre genre = (Genre) o;
 
-        return id.equals(author.id);
+        return id.equals(genre.id);
     }
 
     @Override
