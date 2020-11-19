@@ -1,6 +1,7 @@
 package api.library.study_library.model.entity;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Table(name="author",schema = "lib")
@@ -14,6 +15,17 @@ public class Author {
 
     @Column(name = "email",nullable = false)
     private String email;
+
+    @OneToMany(mappedBy = "author")
+    private List<Book> books;
+
+    public List<Book> getBooks() {
+        return books;
+    }
+
+    public void setBooks(List<Book> books) {
+        this.books = books;
+    }
 
     public Integer getId() {
         return id;
