@@ -24,7 +24,7 @@ public class AuthorServiceImpl implements AuthorService {
     }
 
     @Override
-    @Transactional
+    @Transactional // Realiza as transações do JPA
     public Author salvarAuthor(Author author) {
         return repository.save(author);
     }

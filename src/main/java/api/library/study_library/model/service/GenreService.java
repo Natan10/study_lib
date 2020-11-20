@@ -9,6 +9,6 @@ public interface GenreService {
     Genre salvarGenero(Genre genre);
     Genre atualizarGenero(Genre genre);
     void deletarGenero(Genre genre);
-    Optional<Genre> buscarGenero(Long id);
+    Optional<Genre> buscarGenero(Integer id);
     List<Genre> listarGeneros();
 }
