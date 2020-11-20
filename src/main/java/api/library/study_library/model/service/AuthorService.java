@@ -9,6 +9,6 @@ public interface AuthorService {
     Author salvarAuthor(Author author);
     Author atualizarAuthor(Author author);
     void deletarAuthor(Author author);
-    Optional<Author> buscarAuthor(Long id);
+    Optional<Author> buscarAuthor(Integer id);
     List<Author> listarAutores();
 }
