@@ -9,6 +9,6 @@ public interface BookService {
     Book salvarLivro(Book book);
     Book atualizarBook(Book book);
     void deletarBook(Book book);
-    Optional<Book> buscarLivro(Long id);
+    Optional<Book> buscarLivro(Integer id);
     List<Book> listarLivros();
 }
