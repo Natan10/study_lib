@@ -1,4 +1,4 @@
-package api.library.study_library.model.service;
+package api.library.study_library.service;
 
 import api.library.study_library.model.entity.Genre;
 

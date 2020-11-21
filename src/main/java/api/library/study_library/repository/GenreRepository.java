@@ -1,4 +1,4 @@
-package api.library.study_library.model.repository;
+package api.library.study_library.repository;
 
 import api.library.study_library.model.entity.Genre;
 import org.springframework.data.jpa.repository.JpaRepository;

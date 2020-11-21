@@ -1,8 +1,8 @@
-package api.library.study_library.model.service.impl;
+package api.library.study_library.service.impl;
 
 import api.library.study_library.model.entity.Author;
-import api.library.study_library.model.repository.AuthorRepository;
-import api.library.study_library.model.service.AuthorService;
+import api.library.study_library.repository.AuthorRepository;
+import api.library.study_library.service.AuthorService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
