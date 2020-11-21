@@ -1,6 +1,5 @@
 package api.library.study_library.model.entity;
 
-import org.springframework.data.convert.Jsr310Converters;
 import org.springframework.data.jpa.convert.threeten.Jsr310JpaConverters;
 
 import javax.persistence.*;
