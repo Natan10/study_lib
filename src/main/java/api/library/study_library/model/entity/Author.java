@@ -18,7 +18,7 @@ public class Author {
     @Column(name = "email",nullable = false)
     private String email;
 
-    @OneToMany(mappedBy = "author")
+    @OneToMany(mappedBy = "author",cascade = CascadeType.ALL,orphanRemoval = true)
     @JsonIgnore
     private List<Book> books;
 
