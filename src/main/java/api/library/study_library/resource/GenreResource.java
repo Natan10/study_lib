@@ -1,5 +1,6 @@
 package api.library.study_library.resource;
 
+import api.library.study_library.dto.GenreDto;
 import api.library.study_library.model.entity.Genre;
 import api.library.study_library.service.GenreService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,49 +22,55 @@ public class GenreResource {
     }
 
     @PostMapping
-    public ResponseEntity save(@RequestBody Genre genre){
+    public ResponseEntity save(@RequestBody GenreDto dto){
         try{
-            Genre genreSave = new Genre();
-            genreSave.setNome(genre.getNome());
-            Genre save = service.salvarGenero(genreSave);
-            return new ResponseEntity(save, HttpStatus.CREATED);
+            Genre aux = criarGenreDto(dto);
+            Genre genre = service.salvarGenero(aux);
+            return new ResponseEntity(genre, HttpStatus.CREATED);
         }catch (Exception e){
-            return ResponseEntity.badRequest().body(e.getMessage());
+            return new ResponseEntity(e.getMessage(),HttpStatus.BAD_REQUEST);
         }
     }
 
     @PutMapping("{id}")
-    public ResponseEntity update(@PathVariable("id") Integer id,@RequestBody Genre dto){
-        Optional<Genre> genre = service.buscarGenero(id);
-        if(!genre.isPresent()){
-            return new ResponseEntity("Gênero não encontrado!",HttpStatus.NOT_FOUND);
-        }
-        genre.get().setNome(dto.getNome());
-        service.atualizarGenero(genre.get());
-        return new ResponseEntity(genre,HttpStatus.OK);
+    public ResponseEntity update(@PathVariable("id") Integer id,@RequestBody GenreDto dto){
+          return service.buscarGenero(id).map(entity -> {
+              try{
+                  Genre genre = criarGenreDto(dto);
+                  genre.setId(entity.getId());
+                  service.atualizarGenero(genre);
+                  return new ResponseEntity(genre,HttpStatus.OK);
+              }catch (Exception e) {
+                  return new ResponseEntity(e.getMessage(),HttpStatus.BAD_REQUEST);
+              }
+          }).orElseGet(()->new ResponseEntity("Gênero não encontrado!",HttpStatus.NOT_FOUND));
+
     }
 
     @DeleteMapping("{id}")
     public ResponseEntity delete(@PathVariable("id") Integer id){
-        Optional<Genre> genre = service.buscarGenero(id);
-        if(!genre.isPresent()){
-            return new ResponseEntity("Gênero não encontrado!",HttpStatus.NOT_FOUND);
-        }
-        service.deletarGenero(genre.get());
-        return new ResponseEntity(HttpStatus.NO_CONTENT);
+        return service.buscarGenero(id).map(entity -> {
+            service.deletarGenero(entity);
+            return new ResponseEntity(HttpStatus.NO_CONTENT);
+        }).orElseGet(()-> new ResponseEntity("Gênero não encontrado!",HttpStatus.NOT_FOUND));
     }
 
     @GetMapping("{id}")
     public ResponseEntity buscarGenero(@PathVariable Integer id){
-        Optional<Genre> genre = service.buscarGenero(id);
-        if(!genre.isPresent()){
-            return new ResponseEntity("Gênero não encontrado!",HttpStatus.NOT_FOUND);
-        }
-        return new ResponseEntity(genre,HttpStatus.OK);
+        return service.buscarGenero(id)
+                .map(genre -> new ResponseEntity(genre,HttpStatus.OK))
+                .orElseGet(()-> new ResponseEntity("Gênero não encontrado!",HttpStatus.NOT_FOUND));
     }
 
     @GetMapping
     public ResponseEntity all(){
         return new ResponseEntity(service.listarGeneros(),HttpStatus.OK);
+    }
+
+    private Genre criarGenreDto(GenreDto dto){
+        Genre genre = new Genre();
+        genre.setNome(dto.getNome());
+
+        return genre;
     }
 }
