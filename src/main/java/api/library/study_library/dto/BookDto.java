@@ -1,13 +1,13 @@
 package api.library.study_library.dto;
 
-import java.time.LocalDate;
+import java.util.Date;
 
 public class BookDto {
     private Integer id;
     private String nome;
     private Integer author;
     private Integer genre;
-    private LocalDate dataPublicacao;
+    private Date dataPublicacao;
 
     public Integer getId() {
         return id;
@@ -19,11 +19,11 @@ public class BookDto {
 
 
 
-    public LocalDate getDataPublicacao() {
+    public Date getDataPublicacao() {
         return dataPublicacao;
     }
 
-    public void setDataPublicacao(LocalDate dataPublicacao) {
+    public void setDataPublicacao(Date dataPublicacao) {
         this.dataPublicacao = dataPublicacao;
     }
 

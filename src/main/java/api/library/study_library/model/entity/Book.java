@@ -1,9 +1,8 @@
 package api.library.study_library.model.entity;
 
-import org.springframework.data.jpa.convert.threeten.Jsr310JpaConverters;
-
+import com.fasterxml.jackson.annotation.JsonFormat;
 import javax.persistence.*;
-import java.time.LocalDate;
+import java.util.Date;
 
 @Entity
 @Table(name="book",schema = "lib")
@@ -24,8 +23,9 @@ public class Book {
     private Genre genre;
 
     @Column(name = "data_publicacao")
-    @Convert(converter= Jsr310JpaConverters.LocalDateConverter.class)
-    private LocalDate dataPublicacao;
+    @Temporal(TemporalType.DATE)
+    @JsonFormat(pattern = "dd/MM/yyyy")
+    private Date dataPublicacao;
 
 
     public Integer getId() {
@@ -60,11 +60,11 @@ public class Book {
         this.genre = genre;
     }
 
-    public LocalDate getDataPublicacao() {
+    public Date getDataPublicacao() {
         return dataPublicacao;
     }
 
-    public void setDataPublicacao(LocalDate dataPublicacao) {
+    public void setDataPublicacao(Date dataPublicacao) {
         this.dataPublicacao = dataPublicacao;
     }
 
