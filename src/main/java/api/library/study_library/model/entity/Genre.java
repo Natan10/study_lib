@@ -1,5 +1,7 @@
 package api.library.study_library.model.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.util.List;
 
@@ -14,16 +16,17 @@ public class Genre {
     @Column(name = "nome",nullable = false)
     private String nome;
 
-//    @OneToMany(mappedBy = "genre")
-//    private List<Book> books;
-//
-//    public List<Book> getBooks() {
-//        return books;
-//    }
-//
-//    public void setBooks(List<Book> books) {
-//        this.books = books;
-//    }
+    @OneToMany(mappedBy = "genre")
+    @JsonIgnore
+    private List<Book> books;
+
+    public List<Book> getBooks() {
+        return books;
+    }
+
+    public void setBooks(List<Book> books) {
+        this.books = books;
+    }
 
     public Integer getId() {
         return id;

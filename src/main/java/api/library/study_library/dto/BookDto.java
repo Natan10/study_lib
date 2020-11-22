@@ -7,6 +7,7 @@ public class BookDto {
     private String nome;
     private Integer author;
     private Integer genre;
+    private LocalDate dataPublicacao;
 
     public Integer getId() {
         return id;
@@ -16,7 +17,7 @@ public class BookDto {
         this.id = id;
     }
 
-    private LocalDate dataPublicacao;
+
 
     public LocalDate getDataPublicacao() {
         return dataPublicacao;
