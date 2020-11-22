@@ -1,5 +1,6 @@
 package api.library.study_library.resource;
 
+import api.library.study_library.dto.AuthorDto;
 import api.library.study_library.model.entity.Author;
 import api.library.study_library.service.AuthorService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,28 +21,23 @@ public class AuthorResource {
     }
 
     @PostMapping
-    public ResponseEntity save(@RequestBody Author author){
+    public ResponseEntity save(@RequestBody AuthorDto dto){
         try {
-            Author authorSave = new Author();
-            authorSave.setNome(author.getNome());
-            authorSave.setEmail(author.getEmail());
+            Author aux = criarAuthorDto(dto);
+            Author author = service.salvarAuthor(aux);
 
-            Author save = service.salvarAuthor(authorSave);
-            return new ResponseEntity(save, HttpStatus.CREATED);
+            return new ResponseEntity(author, HttpStatus.CREATED);
         }catch (Exception e){
-            return ResponseEntity.badRequest().body(e.getMessage());
+            return new ResponseEntity(e.getMessage(),HttpStatus.BAD_REQUEST);
         }
     }
 
     @PutMapping("{id}")
-    public ResponseEntity update(@PathVariable("id") Integer id, @RequestBody Author dto){
+    public ResponseEntity update(@PathVariable("id") Integer id, @RequestBody AuthorDto dto){
         return service.buscarAuthor(id).map(entity -> {
             try{
-                Author author = new Author();
-                author.setNome(dto.getNome());
-                author.setEmail(dto.getEmail());
+                Author author = criarAuthorDto(dto);
                 author.setId(entity.getId());
-
                 service.atualizarAuthor(author);
                 return ResponseEntity.ok(author);
             }catch (Exception e){
@@ -60,16 +56,22 @@ public class AuthorResource {
 
     @GetMapping("{id}")
     public ResponseEntity buscarAutor(@PathVariable("id") Integer id){
-        Optional<Author> author = service.buscarAuthor(id);
-        if(!author.isPresent()){
-            return new ResponseEntity("Autor não encontrado!",HttpStatus.NOT_FOUND);
-        }
-        //return ResponseEntity.ok(author);
-        return new ResponseEntity(author,HttpStatus.OK);
+         return service.buscarAuthor(id)
+                 .map(author -> new ResponseEntity(author,HttpStatus.OK))
+                 .orElseGet(() -> new ResponseEntity("Autor não encontrado!",HttpStatus.NOT_FOUND));
     }
 
     @GetMapping
     public ResponseEntity all(){
         return ResponseEntity.ok(service.listarAutores());
+    }
+
+
+    private Author criarAuthorDto(AuthorDto dto){
+        Author author = new Author();
+        author.setNome(dto.getNome());
+        author.setEmail(dto.getEmail());
+
+        return author;
     }
 }
