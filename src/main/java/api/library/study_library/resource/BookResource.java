@@ -36,17 +36,9 @@ public class BookResource {
     @PostMapping
     public ResponseEntity save(@RequestBody BookDto dto){
         try {
-            Book book = new Book();
-            book.setNome(dto.getNome());
-            book.setDataPublicacao(dto.getDataPublicacao());
-            Author author = authorService.buscarAuthor(dto.getAuthor())
-                    .orElseThrow(()-> new Exception("Autor não encontrado!"));
-            Genre genre = genreService.buscarGenero(dto.getGenre())
-                    .orElseThrow(()-> new Exception("Genero não encontrado!"));
-            book.setAuthor(author);
-            book.setGenre(genre);
-            Book save = service.salvarLivro(book);
-            return new ResponseEntity(save,HttpStatus.CREATED);
+            Book aux = criarBookDto(dto);
+            Book book = service.salvarLivro(aux);
+            return new ResponseEntity(book,HttpStatus.CREATED);
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
@@ -55,50 +47,50 @@ public class BookResource {
 
     @PutMapping("{id}")
     public ResponseEntity update(@PathVariable("id") Integer id, @RequestBody BookDto dto){
-        Optional<Book> book = service.buscarLivro(id);
-        if(!book.isPresent()){
-            return new ResponseEntity("Livro não encontrado na base!",HttpStatus.NOT_FOUND);
-        }
-        try {
-            book.get().setNome(dto.getNome());
-            book.get().setDataPublicacao(dto.getDataPublicacao());
-
-            Author author = authorService.buscarAuthor(dto.getAuthor())
-                    .orElseThrow(() -> new Exception("Autor não encontrado!"));
-            Genre genre = genreService.buscarGenero(dto.getGenre())
-                    .orElseThrow(()-> new Exception("Genero não encontrado!"));
-
-            book.get().setAuthor(author);
-            book.get().setGenre(genre);
-            service.atualizarBook(book.get());
-            return new ResponseEntity(book,HttpStatus.OK);
-        }catch (Exception e){
-            return ResponseEntity.badRequest().body(e.getMessage());
-        }
-
+         return service.buscarLivro(id)
+                 .map(entity->{
+                     try{
+                         Book book = criarBookDto(dto);
+                         book.setId(entity.getId());
+                         service.atualizarBook(book);
+                         return new ResponseEntity(book,HttpStatus.OK);
+                     }catch (Exception e) {
+                         return new ResponseEntity(e.getMessage(),HttpStatus.BAD_REQUEST);
+                     }
+                 }).orElseGet(()->new ResponseEntity("Livro não encontrado na base",HttpStatus.BAD_REQUEST));
     }
 
     @DeleteMapping("{id}")
     public ResponseEntity delete(@PathVariable("id") Integer id){
-        Optional<Book> book = service.buscarLivro(id);
-        if(!book.isPresent()){
-            return new ResponseEntity("Livro não encontrado na base!",HttpStatus.NOT_FOUND);
-        }
-        service.deletarBook(book.get());
-        return new ResponseEntity(HttpStatus.NO_CONTENT);
+        return service.buscarLivro(id).map(entity -> {
+            service.deletarBook(entity);
+            return new ResponseEntity(HttpStatus.NO_CONTENT);
+        }).orElseGet(()-> new ResponseEntity("Livro não encontrado na base!",HttpStatus.BAD_REQUEST));
     }
 
     @GetMapping("{id}")
     public ResponseEntity buscarLivro(@PathVariable("id") Integer id){
-        Optional<Book> book = service.buscarLivro(id);
-        if(!book.isPresent()){
-            return new ResponseEntity("Livro não encontrado na base!",HttpStatus.NOT_FOUND);
-        }
-        return new ResponseEntity(book,HttpStatus.OK);
+        return service.buscarLivro(id)
+                .map(book -> new ResponseEntity(book,HttpStatus.OK))
+                .orElseGet(()-> new ResponseEntity("Livro não encontrado na base!",HttpStatus.NOT_FOUND));
     }
 
     @GetMapping
     public ResponseEntity all(){
         return new ResponseEntity(service.listarLivros(), HttpStatus.OK);
+    }
+
+    private Book criarBookDto(BookDto dto) throws Exception {
+        Book book = new Book();
+        book.setNome(dto.getNome());
+        book.setDataPublicacao(dto.getDataPublicacao());
+        Author author = authorService.buscarAuthor(dto.getAuthor())
+                .orElseThrow(()-> new Exception("Autor não encontrado!"));
+        Genre genre = genreService.buscarGenero(dto.getGenre())
+                .orElseThrow(()-> new Exception("Genero não encontrado!"));
+        book.setAuthor(author);
+        book.setGenre(genre);
+
+        return book;
     }
 }

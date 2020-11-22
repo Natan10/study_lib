@@ -43,21 +43,6 @@ public class BookDto {
         this.author = author;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
-        BookDto bookDto = (BookDto) o;
-
-        return id.equals(bookDto.id);
-    }
-
-    @Override
-    public int hashCode() {
-        return id.hashCode();
-    }
-
     public Integer getGenre() {
         return genre;
     }
