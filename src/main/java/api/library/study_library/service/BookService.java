@@ -11,4 +11,5 @@ public interface BookService {
     void deletarBook(Book book);
     Optional<Book> buscarLivro(Integer id);
     List<Book> listarLivros();
+    List<Book> buscarPorGenero(Integer id);
 }

@@ -75,6 +75,12 @@ public class BookResource {
                 .orElseGet(()-> new ResponseEntity("Livro não encontrado na base!",HttpStatus.NOT_FOUND));
     }
 
+    @GetMapping("{id}/genre")
+    public ResponseEntity buscarLivroPorGenero(@PathVariable("id") Integer id){
+        return new ResponseEntity(service.buscarPorGenero(id),HttpStatus.OK);
+
+    }
+
     @GetMapping
     public ResponseEntity all(){
         return new ResponseEntity(service.listarLivros(), HttpStatus.OK);
