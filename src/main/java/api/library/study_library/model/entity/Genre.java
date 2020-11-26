@@ -21,6 +21,7 @@ public class Genre {
     private Integer id;
 
     @Column(name = "nome",nullable = false)
+    @Enumerated(EnumType.STRING)
     private String nome;
 
     @OneToMany(mappedBy = "genre")
