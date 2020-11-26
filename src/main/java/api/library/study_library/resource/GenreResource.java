@@ -68,9 +68,7 @@ public class GenreResource {
     }
 
     private Genre criarGenreDto(GenreDto dto){
-        Genre genre = new Genre();
-        genre.setNome(dto.getNome());
-
+        Genre genre = Genre.builder().nome(dto.getNome()).build();
         return genre;
     }
 }

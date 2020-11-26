@@ -8,7 +8,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/autores")
@@ -68,10 +67,7 @@ public class AuthorResource {
 
 
     private Author criarAuthorDto(AuthorDto dto){
-        Author author = new Author();
-        author.setNome(dto.getNome());
-        author.setEmail(dto.getEmail());
-
+        Author author = Author.builder().nome(dto.getNome()).email(dto.getEmail()).build();
         return author;
     }
 }
