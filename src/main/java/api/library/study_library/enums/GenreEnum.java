@@ -10,5 +10,7 @@ public enum GenreEnum {
     FICCAO,
     GUERRA,
     TERROR,
-    ROMANCE
+    ROMANCE,
+    SUSPENSE,
+    MANGA
 }

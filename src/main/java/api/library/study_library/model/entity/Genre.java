@@ -1,5 +1,6 @@
 package api.library.study_library.model.entity;
 
+import api.library.study_library.enums.GenreEnum;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
@@ -22,7 +23,7 @@ public class Genre {
 
     @Column(name = "nome",nullable = false)
     @Enumerated(EnumType.STRING)
-    private String nome;
+    private GenreEnum nome;
 
     @OneToMany(mappedBy = "genre")
     @JsonIgnore

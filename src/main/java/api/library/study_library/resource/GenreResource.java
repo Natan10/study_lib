@@ -25,6 +25,7 @@ public class GenreResource {
     public ResponseEntity save(@RequestBody GenreDto dto){
         try{
             Genre aux = criarGenreDto(dto);
+
             Genre genre = service.salvarGenero(aux);
             return new ResponseEntity(genre, HttpStatus.CREATED);
         }catch (Exception e){

@@ -1,5 +1,6 @@
 package api.library.study_library.dto;
 
+import api.library.study_library.enums.GenreEnum;
 import lombok.*;
 
 @Getter
@@ -8,6 +9,6 @@ import lombok.*;
 @AllArgsConstructor
 @Builder
 public class GenreDto {
-    private String nome;
+    private GenreEnum nome;
 
 }
