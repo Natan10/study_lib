@@ -4,9 +4,14 @@ import api.library.study_library.dto.AuthorDto;
 import api.library.study_library.model.entity.Author;
 import api.library.study_library.service.AuthorService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+
 
 
 @RestController
@@ -61,8 +66,9 @@ public class AuthorResource {
     }
 
     @GetMapping
-    public ResponseEntity all(){
-        return ResponseEntity.ok(service.listarAutores());
+    public ResponseEntity all(@PageableDefault(sort = "nome",
+            direction = Sort.Direction.ASC,page=0,size=1) Pageable page){
+        return ResponseEntity.ok(service.listarAutores(page));
     }
 
     @GetMapping("/{id}/books")

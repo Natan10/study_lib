@@ -6,6 +6,7 @@ import api.library.study_library.model.entity.Genre;
 import api.library.study_library.repository.AuthorRepository;
 import api.library.study_library.service.AuthorService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -21,7 +22,6 @@ public class AuthorServiceImpl implements AuthorService {
 
     // Injeçao de depêndecia pelo construtor
     public AuthorServiceImpl(AuthorRepository repository){
-        super();
         this.repository = repository;
     }
 
@@ -50,8 +50,8 @@ public class AuthorServiceImpl implements AuthorService {
     }
 
     @Override
-    public List<Author> listarAutores() {
-        return repository.findAll();
+    public Page<Author> listarAutores(Pageable page) {
+        return repository.findAll(page);
     }
 
     @Override
