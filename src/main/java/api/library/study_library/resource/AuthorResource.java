@@ -65,6 +65,15 @@ public class AuthorResource {
         return ResponseEntity.ok(service.listarAutores());
     }
 
+    @GetMapping("/{id}/books")
+    public ResponseEntity booksForAuthor(@PathVariable("id") Integer id){
+        return new ResponseEntity(service.listaLivrosAutor(id),HttpStatus.OK);
+    }
+
+    @GetMapping("{id}/genres")
+    public ResponseEntity genresForAuthor(@PathVariable("id") Integer id){
+        return new ResponseEntity(service.listaGenerosAutor(id),HttpStatus.OK);
+    }
 
     private Author criarAuthorDto(AuthorDto dto){
         Author author = Author.builder().nome(dto.getNome()).email(dto.getEmail()).build();

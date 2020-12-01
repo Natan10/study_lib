@@ -1,6 +1,8 @@
 package api.library.study_library.service.impl;
 
 import api.library.study_library.model.entity.Author;
+import api.library.study_library.model.entity.Book;
+import api.library.study_library.model.entity.Genre;
 import api.library.study_library.repository.AuthorRepository;
 import api.library.study_library.service.AuthorService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -50,5 +52,15 @@ public class AuthorServiceImpl implements AuthorService {
     @Override
     public List<Author> listarAutores() {
         return repository.findAll();
+    }
+
+    @Override
+    public List<Book> listaLivrosAutor(Integer id) {
+        return repository.listaLivros(id);
+    }
+
+    @Override
+    public List<Genre> listaGenerosAutor(Integer id) {
+        return repository.listaGeneros(id);
     }
 }
