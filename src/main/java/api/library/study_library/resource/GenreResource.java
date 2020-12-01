@@ -4,6 +4,9 @@ import api.library.study_library.dto.GenreDto;
 import api.library.study_library.model.entity.Genre;
 import api.library.study_library.service.GenreService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -64,8 +67,9 @@ public class GenreResource {
     }
 
     @GetMapping
-    public ResponseEntity all(){
-        return new ResponseEntity(service.listarGeneros(),HttpStatus.OK);
+    public ResponseEntity all(@PageableDefault(sort = "id",page = 0,size = 2,
+            direction = Sort.Direction.ASC) Pageable page){
+        return new ResponseEntity(service.listarGeneros(page),HttpStatus.OK);
     }
 
     private Genre criarGenreDto(GenreDto dto){

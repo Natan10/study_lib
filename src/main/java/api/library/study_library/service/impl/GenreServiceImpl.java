@@ -4,10 +4,11 @@ import api.library.study_library.model.entity.Genre;
 import api.library.study_library.repository.GenreRepository;
 import api.library.study_library.service.GenreService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -45,8 +46,8 @@ public class GenreServiceImpl implements GenreService {
     }
 
     @Override
-    public List<Genre> listarGeneros() {
-        return repository.findAll();
+    public Page<Genre> listarGeneros(Pageable page) {
+        return repository.findAll(page);
     }
 
 
